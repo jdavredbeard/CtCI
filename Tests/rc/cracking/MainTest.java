@@ -40,5 +40,26 @@ public class MainTest {
     public void uniqueTest8() throws Exception {
         assertEquals(false,Main.unique4("aabcde"));
     }
+    ////////////// 1.2 ///////////////
+    @Test
+    public void permTest1() {
+        assertEquals(true, Main.perm1("abc","bac"));
+    }
+    @Test
+    public void permTest2() {
+        assertEquals(true, Main.perm1("abcd","bdac"));
+    }
+    @Test
+    public void permTest3() {
+        assertEquals(false, Main.perm1("abcd","bdace"));
+    }
+    @Test
+    public void findMaxSumTest() {
+        assertEquals(5,Main.findMaxSum(new int[]{2,-8,3,-2,4,-10}));
+    }
+    @Test
+    public void findMaxSumAdityaTest() {
+        assertEquals(5, Main.findMaxSumAditya(new int[]{2,-8,3,-2,4,-10}));
+    }
 
 }

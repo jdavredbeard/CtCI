@@ -1,7 +1,11 @@
 package rc.cracking;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.HashMap;
+
+import static jdk.nashorn.internal.objects.Global.Infinity;
 
 public class Main {
 
@@ -43,7 +47,7 @@ public class Main {
         }
         return true;
     }
-    //my version of boo solution using BitSet just for fun
+    //my version of book solution using BitSet just for fun
     public static boolean unique4(String test) {
         BitSet checker = new BitSet();
         for (int i = 0; i<test.length();i++) {
@@ -53,4 +57,64 @@ public class Main {
         }
         return true;
     }
+
+
+/////////// Arrays & Strings 1.2 ///////////
+     public static boolean perm1(String str1, String str2) {
+         char[] ch1 = str1.toCharArray();
+         char[] ch2 = str2.toCharArray();
+
+         Arrays.sort(ch1);
+         Arrays.sort(ch2);
+
+         return Arrays.toString(ch1).equals(Arrays.toString(ch2));
+     }
+
+    ///////////// 16.17 ///////////
+
+    //my solution- unfortunately based on faulty assumptions- neat recursion but it doesn't
+    //produce the right answer
+    public static int findMaxSum(int[] arr) {
+        int maxSum, arrSum, arr1Sum, arr2Sum;
+        int[] arr1 = Arrays.copyOfRange(arr, 1, arr.length -1);
+        int[] arr2 = Arrays.copyOfRange(arr, 0, arr.length - 2);
+        arrSum = findSum(arr);
+        arr1Sum = findSum(arr1);
+        arr2Sum = findSum(arr2);
+        maxSum = Math.max(arrSum, arr1Sum);
+        maxSum = Math.max(maxSum, arr2Sum);
+        if (maxSum==arr1Sum) return findMaxSum(arr1);
+        if (maxSum==arr2Sum) return findMaxSum(arr2);
+        else return maxSum;
+
+    }
+
+    public static int findMaxSumAditya(int[] arr) {
+        int gm = findMax(arr);
+        int msf = arr[0];
+        for (int i = 0; i < arr.length; i++) {
+            msf = Math.max(arr[i], msf + arr[i]);
+            gm = Math.max(gm,msf);
+        }
+        return gm;
+
+
+    }
+    public static int findSum(int[] arr) {
+        int arrSum = 0;
+        arrSum = Arrays.stream(arr).sum();
+        return arrSum;
+    }
+    public static int findMax(int[] arr) {
+        int max = Integer.MIN_VALUE;
+        max = Arrays.stream(arr).reduce(max, (a,b) -> Math.max(a,b));
+        return max;
+    }
+
+
+
 }
+
+
+
+
