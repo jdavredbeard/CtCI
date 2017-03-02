@@ -54,12 +54,59 @@ public class MainTest {
         assertEquals(false, Main.perm1("abcd","bdace"));
     }
     @Test
-    public void findMaxSumTest() {
-        assertEquals(5,Main.findMaxSum(new int[]{2,-8,3,-2,4,-10}));
+    public void permTest4() {
+        assertEquals(true, Main.perm2("abc","bac"));
     }
+    @Test
+    public void permTest5() {
+        assertEquals(true, Main.perm2("abcd","bdac"));
+    }
+    @Test
+    public void permTest6() { assertEquals(false, Main.perm2("abcd","bdace")); }
+    @Test
+    public void permTest6a() { assertEquals(false, Main.perm2("abcd","bdae")); }
+    @Test
+    public void permTest7() {
+        assertEquals(true, Main.perm3("abc","bac"));
+    }
+    @Test
+    public void permTest8() {
+        assertEquals(true, Main.perm3("abcd","bdac"));
+    }
+    @Test
+    public void permTest9() {
+        assertEquals(false, Main.perm3("abcd","bdace"));
+    }
+    @Test
+    public void permTest9a() {
+        assertEquals(false, Main.perm3("abcd","bdae"));
+    }
+
+    ////////////// 1.3 ////////////////
+    @Test
+    public void urlifyTest1() {
+        assertEquals("Mr%20John%20Smith", Main.urlify("Mr John Smith    ",13));
+    }
+
+    ///////////// 1.4 /////////////
+    @Test
+    public void palinPermTest() {
+        assertEquals(true, Main.palinPerm("Tact Coa"));
+    }
+
+    ///////////// 16.17 //////////////
+//    @Test
+//    public void findMaxSumTest() {
+//        assertEquals(5,Main.findMaxSum(new int[]{2,-8,3,-2,4,-10}));
+//    }
     @Test
     public void findMaxSumAdityaTest() {
         assertEquals(5, Main.findMaxSumAditya(new int[]{2,-8,3,-2,4,-10}));
     }
+
+//    @Test
+//    public void findMaxSumAdityaJonReduceTest() {
+//        assertEquals(5, Main.findMaxSumAdityaJonReduce(new int[]{2,-8,3,-2,4,-10}));
+//    }
 
 }

@@ -61,6 +61,8 @@ public class Main {
 
 /////////// Arrays & Strings 1.2 ///////////
      public static boolean perm1(String str1, String str2) {
+         if (str1.length() != str2.length()) return false;
+
          char[] ch1 = str1.toCharArray();
          char[] ch2 = str2.toCharArray();
 
@@ -69,6 +71,86 @@ public class Main {
 
          return Arrays.toString(ch1).equals(Arrays.toString(ch2));
      }
+
+     // my solution with more abstraction
+    public static String sort(String s) {
+        char[] ch = s.toCharArray();
+        Arrays.sort(ch);
+        return new String(ch);
+    }
+    public static boolean perm2(String s, String t) {
+        if (s.length() != t.length()) return false;
+        return sort(s).equals(sort(t));
+    }
+
+    //for time efficiency, doing char counts instead of sorting. Also use an array of ints and the ASCII values of the
+    //chars for indices rather than a HashMap
+
+    public static boolean perm3(String s, String t) {
+        if (s.length() != t.length()) return false;
+        char[] ch = s.toCharArray();
+        int[] nums = new int[128]; //number of ascii chars
+        for (char c: ch) {
+            nums[c]++;
+        }
+        ch = t.toCharArray();
+        for (char c: ch) {
+            nums[c]--;
+            if (nums[c] < 0) return false;
+        }
+        return true;
+    }
+
+    /////////////// 1.3 /////////////
+
+    public static String urlify(String in, int tl) {
+        int sh = in.length() - 1;
+        char[] ch = in.toCharArray();
+        for (int i = tl - 1; i >= 0; i--) {
+            if (ch[i] != ' ') {
+                ch[sh] = ch[i];
+                sh--;
+
+            }
+            else {
+                ch[sh] = '0';
+                ch[sh - 1] = '2';
+                ch[sh - 2] = '%';
+                sh -= 3;
+            }
+        }
+        return new String(ch);
+    }
+
+    ///////////// 1.4 ////////////
+
+    public static boolean palinPerm(String p) {
+        char[] chp = p.toLowerCase().replaceAll("\\s","").toCharArray();
+        int[] nums = new int[128];
+        for (char c: chp) {
+            nums[c]++;
+        }
+        if (chp.length % 2 == 0) {
+            for (int n: nums) {
+                if (n != 0) {
+                    if (n % 2 != 0) return false;
+                }
+            }
+            return true;
+        }
+        else {
+            boolean foundOdd = false;
+            for (int n: nums) {
+                if (n != 0) {
+                    if (n % 2 != 0) {
+                        if (foundOdd) return false;
+                        foundOdd = true;
+                    }
+                }
+            }
+            return true;
+        }
+    }
 
     ///////////// 16.17 ///////////
 
@@ -88,18 +170,6 @@ public class Main {
         else return maxSum;
 
     }
-
-    public static int findMaxSumAditya(int[] arr) {
-        int gm = findMax(arr);
-        int msf = arr[0];
-        for (int i = 0; i < arr.length; i++) {
-            msf = Math.max(arr[i], msf + arr[i]);
-            gm = Math.max(gm,msf);
-        }
-        return gm;
-
-
-    }
     public static int findSum(int[] arr) {
         int arrSum = 0;
         arrSum = Arrays.stream(arr).sum();
@@ -110,6 +180,31 @@ public class Main {
         max = Arrays.stream(arr).reduce(max, (a,b) -> Math.max(a,b));
         return max;
     }
+
+    public static int findMaxSumAditya(int[] arr) {
+        int gm = findMax(arr);
+        int msf = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            msf = Math.max(arr[i], msf + arr[i]);
+            gm = Math.max(gm,msf);
+        }
+        return gm;
+    }
+    /// this doesn't work ////
+    public static int findMaxSumAdityaJonReduce(int[] arr) {
+
+        return Arrays.stream(arr).reduce(Integer.MIN_VALUE, (a,b) -> {
+            if (Math.max(b,a+b) == b) {
+                return b;
+            }
+            else {
+                return a+b;
+            }
+
+        });
+
+    }
+
 
 
 
