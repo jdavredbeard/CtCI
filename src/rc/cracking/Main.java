@@ -149,6 +149,28 @@ public class Main {
         }
     }
 
+    ///////////// 1.5 ////////////
+    public static void rotateMatrix(int[][] matrix) {
+        int n = matrix[0].length;
+
+        for (int i = 0; i< n/2; i++) {
+            for (int k = i; k < n - i - 1; k++) {
+                int temp = matrix[i][k];
+                matrix[i][k] = matrix[n-1-k][i];
+                matrix[n-1-k][i] = matrix[n-1-i][n-1-k];
+                matrix[n-1-i][n-1-k] = matrix[k][n-1-i];
+                matrix[k][n-1-i] = temp;
+            }
+
+        }
+        //print matrix
+        for (int[] row: matrix) {
+            System.out.println(Arrays.toString(row));
+        }
+    }
+
+
+
     ///////////// 16.17 ///////////
 
     //my solution- unfortunately based on faulty assumptions- neat recursion but it doesn't
@@ -248,10 +270,45 @@ public class Main {
                     assoc.put(name, rootName);
                     rootFreqs.put(rootName, nameFreq + rootFreqs.get(rootName));
                 }
+                //else if both name and syn are in assoc:
+                //      if ((assoc(syn) == null) and (assoc(name) == null)):
+                //          rootName = syn;
+                //          put (name:rootName) in assoc;
+                //          put (rootName:rootFreqs(name) + rootFreqs(rootName)) in rootFreqs
+                //          remove name from rootFreqs
+                else if(assoc.containsKey(name) && assoc.containsKey(syn)) {
+                    if ((assoc.get(name)==null && assoc.get(syn)==null)) {
+                        rootName = syn;
+                        assoc.put(name,rootName);
+                        rootFreqs.put(rootName,rootFreqs.get(name)+rootFreqs.get(rootName));
+                        rootFreqs.remove(name);
+                    }
+                    else if ((assoc.get(name)==null)) {
+                        rootName = assoc.get(syn);
+                        assoc.put(name,rootName);
+                        rootFreqs.put(rootName,rootFreqs.get(name)+rootFreqs.get(rootName));
+                        rootFreqs.remove(name);
+                    }
+                    else if ((assoc.get(syn)==null)) {
+                        rootName = assoc.get(name);
+                        assoc.put(syn,rootName);
+                        rootFreqs.put(rootName,rootFreqs.get(syn)+rootFreqs.get(rootName));
+                        rootFreqs.remove(syn);
+                    }
+                    else { // joining two groups
+                        rootName = assoc.get(syn);
+                        String rootToAdd = assoc.get(name);
+                        assoc.put(rootToAdd,rootName);
+                        rootFreqs.put(rootName,rootFreqs.get(rootToAdd) + rootFreqs.get(rootName));
+                        rootFreqs.remove(rootToAdd);
+
+                    }
+                }
             }
         }
         System.out.println(assoc.toString());
         System.out.println(rootFreqs.toString());
+
         return rootFreqs;
     }
 
