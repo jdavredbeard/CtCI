@@ -1,9 +1,6 @@
 package rc.cracking;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.HashMap;
+import java.util.*;
 
 import static jdk.nashorn.internal.objects.Global.Infinity;
 
@@ -205,7 +202,58 @@ public class Main {
 
     }
 
+    ///////// 17.7 ///////////
 
+    public static HashMap<String, Integer> babyNames(HashMap<String, Integer> freqs, HashMap<String, ArrayList<String>> syns) {
+        HashMap<String, String> assoc = new HashMap<String, String>();
+        HashMap<String, Integer> rootFreqs = new HashMap<String, Integer>();
+
+        for (Map.Entry<String,ArrayList<String>> entry: syns.entrySet()) {
+            for (String syn: entry.getValue()) {
+                String name = entry.getKey();
+
+                String rootName;
+
+                int nameFreq = freqs.containsKey(name) ? freqs.get(name) : 0;
+                int synFreq = freqs.containsKey(syn) ? freqs.get(syn) : 0;
+                //if neither name nor syn are keys in assoc:
+                //        put (name:syn) in assoc
+                //        put (syn:null) in assoc
+                //        put freqs(name) + freqs(syn) in rootFreqs under syn (now rootName)
+                if (!assoc.containsKey(name) && !assoc.containsKey(syn)) {
+                    rootName = syn;
+                    assoc.put(name, rootName);
+                    assoc.put(rootName, null);
+                    rootFreqs.put(rootName, nameFreq + synFreq);
+                }
+                //else if name is in assoc and syn isn’t:
+                //        if (assoc(name) == null) rootName = name
+                //        else rootName = assoc(name);
+                //        put freqs(syn) + rootFeqs(rootName) in rootFreqs(rootName)
+                //        put (syn:rootName) in assoc
+                else if (assoc.containsKey(name) && !assoc.containsKey(syn)) {
+                    if (assoc.get(name) == null) rootName = name;
+                    else rootName = assoc.get(name);
+                    assoc.put(syn, rootName);
+                    rootFreqs.put(rootName, synFreq + rootFreqs.get(rootName));
+                }
+                //else if syn is in assoc and name isnt:
+                //        if (assoc(syn) == null) rootName = syn;
+                //        else rootName = assoc(syn);
+                //        put (name:rootName) in assoc
+                //        put freqs(name) + rootFreqs(rootName) in rootFreqs(rootName)
+                else if (!assoc.containsKey(name) && assoc.containsKey(syn)) {
+                    if (assoc.get(syn) == null) rootName = syn;
+                    else rootName = assoc.get(syn);
+                    assoc.put(name, rootName);
+                    rootFreqs.put(rootName, nameFreq + rootFreqs.get(rootName));
+                }
+            }
+        }
+        System.out.println(assoc.toString());
+        System.out.println(rootFreqs.toString());
+        return rootFreqs;
+    }
 
 
 }

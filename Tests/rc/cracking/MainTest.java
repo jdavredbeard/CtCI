@@ -2,6 +2,10 @@ package rc.cracking;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
 
 /**
@@ -108,5 +112,23 @@ public class MainTest {
 //    public void findMaxSumAdityaJonReduceTest() {
 //        assertEquals(5, Main.findMaxSumAdityaJonReduce(new int[]{2,-8,3,-2,4,-10}));
 //    }
+
+    ///////////// 17.7 /////////////
+    @Test
+    public void babyNamesTest() {
+        HashMap<String, Integer> freqs = new HashMap<String, Integer>();
+        String[] names = new String[]{"John","Jon","Chris","Kris","Christopher"};
+        int[] fr = new int[]{15,12,13,4,19};
+        for (int i = 0; i<names.length;i++) {
+            freqs.put(names[i],fr[i]);
+        }
+
+        HashMap<String, ArrayList<String>> syns = new HashMap<String, ArrayList<String>>();
+        syns.put("Jon", new ArrayList<String>(Arrays.asList("John")));
+        syns.put("John",new ArrayList<String>(Arrays.asList("Johnny")));
+        syns.put("Chris", new ArrayList<String>(Arrays.asList("Kris","Christopher")));
+
+        assertEquals("{Kris=36, John=27}", Main.babyNames(freqs,syns).toString());
+    }
 
 }
